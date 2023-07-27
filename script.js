@@ -15,7 +15,7 @@ function getComputerChoice() {
 }
 
 // A function that plays a single round of RPS.
-function playRoundRPS(playerSelection = 'paper', computerSelection = getComputerChoice()) {
+function playRoundRPS(playerSelection, computerSelection) {
     // Case insensitive player input
     let caseInsensitivePlayerSelection = playerSelection.toLowerCase();
 
@@ -24,31 +24,40 @@ function playRoundRPS(playerSelection = 'paper', computerSelection = getComputer
         case 'rock':
             switch (computerSelection) {
                 case 'rock':
-                    return "It's a TIE! Rock equals Rock";
+                    resultsDiv.textContent =  "It's a TIE! Rock equals Rock";
+                    break;
                 case 'paper':
-                    return "You LOSE! Paper beats Rock";
+                    resultsDiv.textContent =  "You LOSE! Paper beats Rock";
+                    break;
                 case 'scissors':
-                    return "You WIN! Rock beats Scissors";
+                    resultsDiv.textContent =  "You WIN! Rock beats Scissors";
+                    break;
             }
             break;
         case 'paper':
             switch (computerSelection) {
                 case 'rock':
-                    return "You WIN! Paper beats Rock";
+                    resultsDiv.textContent =  "You WIN! Paper beats Rock";
+                    break;
                 case 'paper':
-                    return "It's a TIE! Paper equals Paper";
+                    resultsDiv.textContent =  "It's a TIE! Paper equals Paper";
+                    break;
                 case 'scissors':
-                    return "You LOSE! Scissors beats Paper";
+                    resultsDiv.textContent =  "You LOSE! Scissors beats Paper";
+                    break;
             }
             break;
         case 'scissors':
             switch (computerSelection) {
                 case 'rock':
-                    return "You LOSE! Rock beats Scissors";
+                    resultsDiv.textContent =  "You LOSE! Rock beats Scissors";
+                    break;
                 case 'paper':
-                    return "You WIN! Scissors beats Paper";
+                    resultsDiv.textContent =  "You WIN! Scissors beats Paper";
+                    break;
                 case 'scissors':
-                    return "It's a TIE! Scissors equals Scissors";
+                    resultsDiv.textContent =  "It's a TIE! Scissors equals Scissors";
+                    break;
             }
             break;
     }
@@ -79,3 +88,18 @@ function game() {
         console.log("It's a TIE!");
     }
 }
+
+let rockButton = document.querySelector(".rock");
+let paperButton = document.querySelector(".paper");
+let scissorsButton = document.querySelector(".scissors");
+let resultsDiv = document.querySelector(".results");
+
+rockButton.addEventListener('click', () => {
+    playRoundRPS('rock', getComputerChoice());
+});
+paperButton.addEventListener('click', () => {
+    playRoundRPS('paper', getComputerChoice());
+});
+scissorsButton.addEventListener('click', () => {
+    playRoundRPS('scissors', getComputerChoice());
+});
