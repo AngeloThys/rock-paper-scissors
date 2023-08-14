@@ -1,105 +1,82 @@
-// A function that returns rock, paper or scissors randomly.
-function getComputerChoice() {
-    // Generate a random number between 0 and 2
-    let randomNumber = Math.floor(Math.random() * 3);
+// All the choices in a game of rock, paper, scissors, spock, lizard from The Big Bang Theory.
+const choices = ["rock", "paper", "scissors", "spock", "lizard"];
 
-    // Assign each number to a choice and return said choice
-    switch (randomNumber) {
-        case 0:
-            return "rock";
-        case 1:
-            return "paper";
-        case 2:
-            return "scissors";
+class Game {
+    constructor(resultsDiv, gameDiv) {
+        this.results = {
+            rock: ["scissors", "lizard"],
+            paper: ["rock", "spock"],
+            scissors: ["paper", "lizard"],
+            spock: ["scissors", "rock"],
+            lizard: ["paper", "spock"]
+        };
+        this.resultsDiv = resultsDiv;
+        this.gameDiv = gameDiv;
     }
-}
 
-// A function that plays a single round of RPS.
-function playRoundRPS(playerSelection, computerSelection) {
-    // Case insensitive player input
-    let caseInsensitivePlayerSelection = playerSelection.toLowerCase();
+    // An automatic, pseudo-randomized choice for the computer.
+    getComputerChoice() {
+        let computerChoice = choices[Math.floor(Math.random() * choices.length)];
 
-    // Compare selections and return result
-    switch (caseInsensitivePlayerSelection) {
-        case 'rock':
-            switch (computerSelection) {
-                case 'rock':
-                    resultsDiv.textContent =  "It's a TIE! Rock equals Rock";
-                    break;
-                case 'paper':
-                    resultsDiv.textContent =  "You LOSE! Paper beats Rock";
-                    break;
-                case 'scissors':
-                    resultsDiv.textContent =  "You WIN! Rock beats Scissors";
-                    break;
-            }
-            break;
-        case 'paper':
-            switch (computerSelection) {
-                case 'rock':
-                    resultsDiv.textContent =  "You WIN! Paper beats Rock";
-                    break;
-                case 'paper':
-                    resultsDiv.textContent =  "It's a TIE! Paper equals Paper";
-                    break;
-                case 'scissors':
-                    resultsDiv.textContent =  "You LOSE! Scissors beats Paper";
-                    break;
-            }
-            break;
-        case 'scissors':
-            switch (computerSelection) {
-                case 'rock':
-                    resultsDiv.textContent =  "You LOSE! Rock beats Scissors";
-                    break;
-                case 'paper':
-                    resultsDiv.textContent =  "You WIN! Scissors beats Paper";
-                    break;
-                case 'scissors':
-                    resultsDiv.textContent =  "It's a TIE! Scissors equals Scissors";
-                    break;
-            }
-            break;
+        return computerChoice;
     }
-}
 
-// A function that plays 5 rounds of RPS, keeps score and declares a winner.
-// declare the winner of the game of 5.
-function game() {
-    let userWinCount = 0;
+    // A single round of RPSSL.
+    playRound(playerChoice, computerChoice) {
+        let sanitizedPlayerChoice = playerChoice.toLowerCase();
 
-    for (let i = 0; i < 5; i++) {
-        let result = playRoundRPS(window.prompt("Enter either 'Rock', 'Paper' or 'Scissors'"));
-
-        console.log(result);
-
-        if (result.includes('WIN')) {
+        if (sanitizedPlayerChoice === computerChoice) {
+            this.resultsDiv.textContent += "It's a tie!\r\n";
+        } else if (this.results[sanitizedPlayerChoice].includes(computerChoice)) {
             userWinCount++;
-        } else if (result.includes('LOSE')) {
+            this.resultsDiv.textContent += `You win! ${sanitizedPlayerChoice} beats ${computerChoice}.\r\n`;
+        } else {
             userWinCount--;
+            this.resultsDiv.textContent += `You lose! ${computerChoice} beats ${sanitizedPlayerChoice}.\r\n`;
+        }
+
+        gameCounter++;
+
+        if (gameCounter >= 5) {
+            if (userWinCount > 0) {
+                this.gameDiv.textContent += "The User has WON!\r\n";
+            } else if (userWinCount < 0) {
+                this.gameDiv.textContent += "The Computer has WON!\r\n";
+            } else {
+                this.gameDiv.textContent += "It's a TIE!\r\n";
+            }
+
+            gameCounter = 0;
         }
     }
-
-    if (userWinCount > 0) {
-        console.log("The User has WON!");
-    } else if (userWinCount < 0) {
-        console.log("The Computer has WON!");
-    } else {
-        console.log("It's a TIE!");
-    }
 }
 
-let rockButton = document.querySelector(".rock");
-let paperButton = document.querySelector(".paper");
-let scissorsButton = document.querySelector(".scissors");
-let resultsDiv = document.querySelector(".results");
+let gameCounter = 0;
+let userWinCount = 0;
 
-rockButton.addEventListener('click', () => {
-    playRoundRPS('rock', getComputerChoice());
+
+let rockMapArea = document.querySelector(".rock");
+let paperMapArea = document.querySelector(".paper");
+let scissorsMapArea = document.querySelector(".scissors");
+let spockMapArea = document.querySelector(".spock");
+let lizardMapArea = document.querySelector(".lizard");
+let resultsDiv = document.querySelector(".roundResults");
+let gameDiv = document.querySelector(".gameResults");
+
+const newGame = new Game(resultsDiv, gameDiv);
+
+rockMapArea.addEventListener('click', () => {
+    newGame.playRound('rock', newGame.getComputerChoice());
 });
-paperButton.addEventListener('click', () => {
-    playRoundRPS('paper', getComputerChoice());
+paperMapArea.addEventListener('click', () => {
+    newGame.playRound('paper', newGame.getComputerChoice());
 });
-scissorsButton.addEventListener('click', () => {
-    playRoundRPS('scissors', getComputerChoice());
+scissorsMapArea.addEventListener('click', () => {
+    newGame.playRound('scissors', newGame.getComputerChoice());
+});
+spockMapArea.addEventListener('click', () => {
+    newGame.playRound('spock', newGame.getComputerChoice());
+});
+lizardMapArea.addEventListener('click', () => {
+    newGame.playRound('lizard', newGame.getComputerChoice());
 });

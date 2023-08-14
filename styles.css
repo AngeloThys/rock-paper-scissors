@@ -1,0 +1,23 @@
+html,
+body {
+    background-color: #779;
+    font-family: 'Preahvihear', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: space-around;
+}
+
+.round,
+.game {
+    border: rgb(77, 77, 138) solid 4px;
+    border-radius: 1rem;
+    padding: 1rem;
+    background-color: #c1bebe;
+}
+
+.roundResults,
+.gameResults {
+    white-space: pre;
+}
